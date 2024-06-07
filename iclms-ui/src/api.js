@@ -8,6 +8,5 @@ export default async function GET(path, host, token) {
             }
         }
     );
-    console.log(response);
     return await response.json();
 }
