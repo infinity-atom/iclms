@@ -1,3 +1,4 @@
+import { createRouter, createWebHistory } from 'vue-router/auto';
 
 /**
  * router/index.ts
@@ -6,10 +7,21 @@
  */
 
 // Composables
-import { createRouter, createWebHistory } from 'vue-router/auto'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-})
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: [
+        {
+            path: "/",
+            name: "Dashboard",
+            component: () => import("@/pages/index.vue")
+        },
+        {
+            path: "/settings",
+            name: "Settings",
+            component: () => import("@/pages/settings.vue")
+        }
+    ]
+});
 
 export default router
