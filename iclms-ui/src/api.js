@@ -4,8 +4,11 @@ export default async function GET(path, host, token) {
         {
             method: "GET",
             headers: {
-                Authorization: `Bearer ${token}`
-            }
+                Authorization: `Bearer ${token}`,
+                Pragma: "no-cache",
+                "Cache-Control": "no-cache"
+            },
+            cache: "no-cache"
         }
     );
     return await response.json();

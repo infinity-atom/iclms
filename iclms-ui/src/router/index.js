@@ -20,6 +20,21 @@ const router = createRouter({
             path: "/settings",
             name: "Settings",
             component: () => import("@/pages/settings.vue")
+        },
+        {
+            path: "/modules",
+            name: "Modules",
+            component: () => import("@/pages/modules.vue")
+        },
+        {
+            path: "/page",
+            name: "Page",
+            component: () => import("@/pages/page.vue")
+        },
+        {
+            path: "/goto-course",
+            name: "internal-GotoCourse",
+            component: () => import("@/pages/goto-course.vue")
         }
     ]
 });

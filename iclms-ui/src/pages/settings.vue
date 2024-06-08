@@ -36,24 +36,47 @@
         </v-dialog>
 
         <v-snackbar v-model="settingsNotification" :timeout=2000>
-            Settings saved. Changes will take effect on the next page load.
+            Settings saved. You may have to restart the app for changes to take effect.
             <template v-slot:actions>
                 <v-btn text @click="settingsNotification = false">Close</v-btn>
             </template>
         </v-snackbar>
 
         <v-main>
-            <div class="pa-4 d-flex justify-center">
-                <v-card width="50%">
+            <div class="pa-4 d-flex align-center flex-column">
+                <v-card width="50%" elevation="12" class="mt-2 mb-2">
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" @click="saveSettings">Save all</v-btn>
+                    </v-card-actions>
+                </v-card>
+
+                <v-card width="50%" elevation="12" class="mt-2 mb-2" title="API">
                     <v-card-text>
-                        <v-text-field label="App Name" v-model="app_name" variant="outlined"></v-text-field>
                         <v-text-field label="API host" v-model="api_host" variant="outlined"></v-text-field>
                         <v-text-field label="API key" v-model="api_key" variant="outlined"></v-text-field>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn color="primary" @click="saveSettings">Save</v-btn>
                         <v-spacer></v-spacer>
                         <v-btn icon="mdi-help-circle" @click="helpDialog = true"></v-btn>
+                    </v-card-actions>
+                </v-card>
+                <v-card width="50%" elevation="12" class="mt-2 mb-2" title="Appearance">
+                    <v-card-text>
+                        <v-text-field label="App Name" v-model="app_name" variant="outlined"></v-text-field>
+                        <v-select label="Appearance mode" :items="['Light', 'Dark']" variant="outlined" v-model="app_mode"></v-select>
+                    </v-card-text>
+                </v-card>
+                <v-card width="50%" elevation="12" class="mt-2 mb-2" title="Modules View">
+                    <v-card-text>
+                        <v-switch label="Enable indents" color="primary" v-model="indent_enable"></v-switch>
+                    </v-card-text>
+                </v-card>
+
+                <v-card width="50%" elevation="12" class="mt-2 mb-2">
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" @click="saveSettings">Save all</v-btn>
                     </v-card-actions>
                 </v-card>
             </div>
@@ -65,10 +88,15 @@
     import IclmsNavigation from "../components/iclms-navigation.vue";
 
     import { ref } from "vue";
+    import { useTheme } from "vuetify";
+
+    const theme = useTheme();
 
     const app_name = ref(localStorage.app_name || "icLMS");
     const api_host = ref(localStorage.api_host || "");
     const api_key = ref(localStorage.api_key || "");
+    const app_mode = ref(localStorage.app_mode || "Dark");
+    const indent_enable = ref(localStorage.indent_enable != "false");
 
     const helpDialog = ref(false);
     const settingsNotification = ref(false);
@@ -77,6 +105,10 @@
         localStorage.app_name = app_name.value;
         localStorage.api_host = api_host.value;
         localStorage.api_key = api_key.value;
+        localStorage.app_mode = app_mode.value;
+        localStorage.indent_enable = indent_enable.value;
+
+        theme.global.name.value = app_mode.value.toLowerCase();
 
         // show snackbar
         settingsNotification.value = true;
