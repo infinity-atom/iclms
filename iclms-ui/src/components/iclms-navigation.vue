@@ -26,7 +26,7 @@
 
 <script setup>
     import { ref } from "vue";
-    import GET from "../api.js";
+    import { GET } from "../api.js";
     import { useTheme } from "vuetify";
 
     const theme = useTheme();

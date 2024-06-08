@@ -35,6 +35,26 @@ const router = createRouter({
             path: "/goto-course",
             name: "internal-GotoCourse",
             component: () => import("@/pages/goto-course.vue")
+        },
+        {
+            path: "/redirect",
+            name: "internal-Redirect",
+            component: () => import("@/pages/redirect.vue")
+        },
+        {
+            path: "/file",
+            name: "File",
+            component: () => import("@/pages/file.vue")
+        },
+        {
+            path: "/assignment",
+            name: "Assignment",
+            component: () => import("@/pages/assignment.vue")
+        },
+        {
+            path: "/assignments",
+            name: "Assignments",
+            component: () => import("@/pages/assignments.vue")
         }
     ]
 });

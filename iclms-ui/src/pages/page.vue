@@ -24,6 +24,7 @@
                     <v-card-title>{{ metadata.title }}</v-card-title>
                     <v-card-actions>
                         <v-btn variant="outlined" color="primary" @click="source_dialog = true">View source</v-btn>
+                        <v-btn variant="outlined" color="primary" @click="downloadBody">Download</v-btn>
                     </v-card-actions>
                 </v-card>
             </div>
@@ -70,7 +71,7 @@
     import IclmsNavigation from "../components/iclms-navigation.vue";
 
     import { ref } from "vue";
-    import GET from "../api.js";
+    import { GET } from "../api.js";
     import { useRoute } from "vue-router";
 
     const route = useRoute();
@@ -93,4 +94,12 @@
         loaded.value = true;
         metadata.value = page;
     })();
+
+    const downloadBody = () => {
+        let a = document.createElement("a");
+        let file = new Blob([body.value], {type: "text/plain"});
+        a.href = URL.createObjectURL(file);
+        a.download = `${metadata.value.title}.html`;
+        a.click();
+    }
 </script>

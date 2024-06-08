@@ -13,7 +13,7 @@
                 >
                     <v-btn variant="outlined" to="/settings" color="primary">Settings</v-btn>
                 </v-empty-state>
-                <v-card v-for="course in courses" class="ma-2" width="22%" elevation="6">
+                <v-card v-for="course in courses" class="ma-2" width="22%" elevation="6" style="min-width: 250px;">
                     <v-card-title>{{ course.name }}</v-card-title>
                     <v-card-text>{{ course.course_code }}</v-card-text>
                     <v-card-actions>
@@ -31,7 +31,7 @@
     import IclmsNavigation from "../components/iclms-navigation.vue";
 
     import { ref } from "vue";
-    import GET from "../api.js";
+    import { GET } from "../api.js";
 
     const courses = ref([]);
     const loaders = ref([]);
