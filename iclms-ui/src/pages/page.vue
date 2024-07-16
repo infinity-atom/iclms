@@ -18,38 +18,31 @@
         </v-dialog>
 
         <v-main>
-            <v-skeleton-loader type="paragraph" v-for="i in loaders"></v-skeleton-loader>
-            <div v-if="loaded" class="header-wrapper">
-                <v-card>
-                    <v-card-title>{{ metadata.title }}</v-card-title>
-                    <v-card-actions>
-                        <v-btn variant="outlined" color="primary" @click="source_dialog = true">View source</v-btn>
-                        <v-btn variant="outlined" color="primary" @click="downloadBody">Download</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </div>
-            <div class="body-wrapper">
-                <v-card class="light">
-                    <div v-html="body" class="pa-5 ma-4"></div>
-                </v-card>
+            <div class="pa-2">
+                <iclms-top-nav class="ma-2"></iclms-top-nav>
+
+                <v-skeleton-loader type="paragraph" v-for="i in loaders" class="ma-2"></v-skeleton-loader>
+                <div v-if="loaded" class="ma-2">
+                    <v-card>
+                        <v-card-title>{{ metadata.title }}</v-card-title>
+                        <v-card-actions>
+                            <v-btn variant="outlined" color="primary" @click="source_dialog = true">View source</v-btn>
+                            <v-btn variant="outlined" color="primary" @click="downloadBody">Download</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </div>
+                <div v-if="loaded" class="ma-2">
+                    <v-card class="light">
+                        <div v-html="body" class="pa-5 ma-4 width-max"></div>
+                    </v-card>
+                </div>
             </div>
         </v-main>
     </v-app>
 </template>
 
 <style scoped>
-    .body-wrapper {
-        padding: 50px;
-        padding-top: 10px;
-    }
-
-    .header-wrapper {
-        padding-left: 50px;
-        padding-right: 50px;
-        padding-top: 10px;
-    }
-
-    .body-wrapper * {
+    .width-max * {
         max-width: 100%;
     }
 
@@ -69,6 +62,7 @@
 
 <script setup>
     import IclmsNavigation from "../components/iclms-navigation.vue";
+    import iclmsTopNav from "@/components/iclms-top-nav.vue";
 
     import { ref } from "vue";
     import { GET } from "../api.js";

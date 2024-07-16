@@ -14,7 +14,7 @@
         </v-card>
     </v-dialog>
 
-    <v-card elevation="24">
+    <v-card variant="tonal">
         <v-sheet class="d-flex align-center flex-column">
             <v-switch
                 v-model="useHTML"
@@ -44,26 +44,31 @@
             ></v-textarea>
         </v-card-text>
         <v-card-actions class="px-4">
+            <v-btn color="primary" @click="onSubmit(model.value)" v-if="builtinSubmit">Submit</v-btn>
             <v-btn color="primary" :to="`/redirect?back=${$route.fullPath}&url=https://www.markdownguide.org/cheat-sheet/`">
                 Markdown Help
             </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" @click="getPreview(); preview_html = true">Preview HTML</v-btn>
         </v-card-actions>
     </v-card>
 </template>
 
 <style scoped>
-.code-editor {
+.code-editor, .code-font {
     font-family: monospace;
 }
 </style>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, defineProps } from "vue";
+import { useRoute } from "vue-router";
 import { marked } from "../marked.js";
 import { POST } from "../api.js";
 
 const useHTML = ref(false);
 const markdownContent = ref("");
+const preview_html = ref(false);
 const sanitized_html = ref("Loading...");
 
 const model = defineModel();
@@ -87,5 +92,25 @@ watch(useHTML, (value) => {
 watch(model, (value) => {
     localStorage.editor_content = value;
 });
+
+const route = useRoute();
+
+const getPreview = async () => {
+    let cid = route.query.course_id;
+    sanitized_html.value = await POST(`/courses/${cid}/preview_html`, localStorage.api_host, localStorage.api_key, new FormData().append("html", model.value), "multipart/form-data").html;
+};
+
+defineProps({
+    onSubmit: {
+        type: Function,
+        required: false,
+        default: new Function()
+    },
+    builtinSubmit: {
+        type: Boolean,
+        required: false,
+        default: false
+    }
+})
 
 </script>

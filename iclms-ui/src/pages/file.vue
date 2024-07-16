@@ -28,7 +28,7 @@
                                 <td>{{ filename }}</td>
                             </tr>
                             <tr>
-                                <td>Filetype</td>
+                                <td>MIME</td>
                                 <td>{{ filetype }}</td>
                             </tr>
                         </tbody>
