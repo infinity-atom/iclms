@@ -26,6 +26,6 @@ jobs:
         with:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: gh-pages  # Replace with your target branch for GitHub Pages
-          FOLDER: ./dist  # Replace with the directory that contains your built assets
+          FOLDER: ./iclms-website/dist  # Replace with the directory that contains your built assets
           CLEAN: true  # Optional: Set to 'true' if you want to clean the target branch before deploying
 
