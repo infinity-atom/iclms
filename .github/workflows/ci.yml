@@ -39,19 +39,19 @@ jobs:
       run: npm install -g yarn
 
     - name: Install and build iclms-ui
-      working-directory: iclms/iclms-ui
+      working-directory: iclms-ui
       run: |
         yarn install
         yarn build
 
     - name: Copy iclms-ui output to iclms-electron serve
-      run: cp -r iclms/iclms-ui/dist/* iclms/iclms-electron/serve
+      run: cp -r iclms-ui/dist/* iclms-electron/serve
 
     - name: Install electron-builder globally
       run: yarn global add electron-builder
 
     - name: Install and build iclms-electron
-      working-directory: iclms/iclms-electron
+      working-directory: iclms-electron
       run: |
         yarn install
         yarn build-${{ matrix.platform }}
