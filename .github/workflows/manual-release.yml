@@ -1,0 +1,146 @@
+name: Manual Build+Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_tag:
+        description: "Tag name for release, cannot include spaces"
+        required: true
+        default: v1.0.0
+        type: string
+      version_friendly:
+        description: "Friendly name for release"
+        required: true
+        default: v1.0.0
+        type: string
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ inputs.version_tag }}
+          release_name: ${{ inputs.version_friendly }}
+          draft: false
+          prerelease: false
+
+  build-linux:
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Setup yarn
+        run: npm install -g yarn
+      
+      - name: Build iclms-ui
+        run: |
+          cd iclms-ui
+          yarn install
+          yarn build
+      
+      - name: Copy files
+        run: |
+          mkdir iclms-electron/serve
+          cp -r iclms-ui/dist/* iclms-electron/serve
+      
+      - name: Build Electron (Linux)
+        run: |
+          cd iclms-electron
+          yarn global add electron-builder
+          yarn install
+          yarn build-linux
+      
+      - name: Upload file
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: iclms-electron/dist/iclms.tar.gz
+          asset_name: iclms-LINUX.tar.gz
+          asset_content_type: application/gzip
+
+  build-windows:
+    needs: create-release
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Setup yarn
+        run: npm install -g yarn
+      
+      - name: Build iclms-ui
+        run: |
+          cd iclms-ui
+          yarn install
+          yarn build
+      
+      - name: Copy files
+        run: |
+          mkdir iclms-electron/serve
+          xcopy iclms-ui\dist\* iclms-electron\serve /E /H /Y
+      
+      - name: Build Electron (Windows)
+        run: |
+          cd iclms-electron
+          yarn global add electron-builder
+          yarn install
+          yarn build-win
+      
+      - name: Upload file
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: iclms-electron\dist\iclms.msi
+          asset_name: iclms-WINDOWS.msi
+          asset_content_type: application/x-ms-installer
+
+  build-mac:
+    needs: create-release
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Setup yarn
+        run: npm install -g yarn
+      
+      - name: Build iclms-ui
+        run: |
+          cd iclms-ui
+          yarn install
+          yarn build
+      
+      - name: Copy files
+        run: |
+          mkdir iclms-electron/serve
+          cp -r iclms-ui/dist/* iclms-electron/serve
+      
+      - name: Build Electron (Mac)
+        run: |
+          cd iclms-electron
+          yarn global add electron-builder
+          yarn install
+          yarn build-mac
+      
+      - name: Upload file
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: iclms-electron/dist/iclms.dmg
+          asset_name: iclms-MAC.dmg
+          asset_content_type: application/octet-stream
