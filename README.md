@@ -4,6 +4,12 @@
 
 **ICLMS** is the Improved Canvas Learning Management System. **More information:** [iclms.infinity-atom.org](https://iclms.infinity-atom.org)
 
+> [!WARNING]
+> icLMS may not work on school or work owned devices, due to software such as Blue Coat Unified Agent
+
+## Install
+You can download binaries for Windows, Mac and Linux from the [releases tab](https://github.com/infinity-atom/iclms/releases).
+
 ## Build
 This repository is split up into 3 directories.
 - `iclms-electron` contains the code that builds the Electron application that icLMS runs off
