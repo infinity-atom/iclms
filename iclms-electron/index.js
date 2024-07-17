@@ -22,7 +22,7 @@ const createWindow = () => {
     server.use(express.static("serve"));
 
     server.get("*", (req, res) => {
-        res.send("<meta http-equiv='refresh' content='0;url=http://localhost:3752'>");
+        res.send("Error: path not found");
     });
 
     server.listen(3752);
@@ -31,9 +31,7 @@ const createWindow = () => {
 }
 
 app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") {
-        app.quit();
-    }
+    app.quit();
 });
 
 app.whenReady().then(() => {
