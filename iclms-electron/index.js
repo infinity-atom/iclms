@@ -7,7 +7,7 @@ const createWindow = () => {
         height: 600,
         autoHideMenuBar: true,
         webPreferences: {
-            devTools: true, // switch in prod
+            devTools: true,
             webSecurity: false
         },
         icon: "./icon.ico"
