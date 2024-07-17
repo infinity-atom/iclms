@@ -20,3 +20,9 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# electron
+/iclms-electron/serve
+
+# build files
+dist
