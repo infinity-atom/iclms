@@ -20,6 +20,7 @@
   },
 
   "build": {
+    "artifactName": "iclms.${ext}"
     "appId": "com.infinityatom.iclms",
     "productName": "icLMS",
     "copyright": "Copyright © 2024 InfinityAtom",
