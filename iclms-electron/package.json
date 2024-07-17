@@ -33,11 +33,11 @@
       "icon": "icon.icns"
     },
     "win": {
-      "target": "zip",
+      "target": "msi",
       "icon": "icon.ico"
     },
     "linux": {
-      "target": "deb"
+      "target": "tar.gz"
     }
   }
 }
