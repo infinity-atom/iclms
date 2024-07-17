@@ -55,6 +55,7 @@ jobs:
       - name: Build Electron (Linux)
         run: |
           cd iclms-electron
+          yarn global add electron-builder
           yarn install
           yarn build-linux
       
@@ -92,6 +93,7 @@ jobs:
       - name: Build Electron (Windows)
         run: |
           cd iclms-electron
+          yarn global add electron-builder
           yarn install
           yarn build-windows
       
@@ -129,6 +131,7 @@ jobs:
       - name: Build Electron (Mac)
         run: |
           cd iclms-electron
+          yarn global add electron-builder
           yarn install
           yarn build-mac
       
