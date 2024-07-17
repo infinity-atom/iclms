@@ -25,12 +25,11 @@
     "productName": "icLMS",
     "copyright": "Copyright © 2024 InfinityAtom",
     "extraFiles": [
-      "serve/",
-      "proxy-prompt/"
+      "serve/"
     ],
     "mac": {
       "category": "public.app-category.education",
-      "target": "dmg",
+      "target": "pkg",
       "icon": "icon.icns"
     },
     "win": {
