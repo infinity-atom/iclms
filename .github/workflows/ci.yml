@@ -14,44 +14,133 @@ on:
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
       - name: Create release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag-name: CI
-          release-name: Continuous Build
+          tag_name: CI
+          release_name: Continuous Build
           draft: false
           prerelease: true
+
   build-linux:
+    needs: create-release
     runs-on: ubuntu-latest
     steps:
-    - name: Setup node.js
-      with:
-        uses: actions/setup-node@v4.0.3
-        node-version: 21
-        cache: yarn
-    - name: Build iclms-ui
-      run: |
-        cd iclms-ui
-        yarn install
-        yarn build
-    - name: Copy files
-      run: |
-        cd ..
-        cp -r iclms-ui/dist/* iclms-electron/serve
-    - name: Build electron
-      run: |
-        cd iclms-electron
-        yarn install
-        yarn build-linux
-    - name: Upload file
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: iclms-electron/dist/iclms-*.tar.gz
-        asset_name: iclms-LINUX.tar.gz
-        asset_content_type: application/gzip
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.0.0
+        with:
+          node-version: 21
+          cache: 'yarn'
+      
+      - name: Build iclms-ui
+        run: |
+          cd iclms-ui
+          yarn install
+          yarn build
+      
+      - name: Copy files
+        run: |
+          cp -r iclms-ui/dist/* iclms-electron/serve
+      
+      - name: Build Electron (Linux)
+        run: |
+          cd iclms-electron
+          yarn install
+          yarn build-linux
+      
+      - name: Upload file
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: iclms-electron/dist/iclms-*.tar.gz
+          asset_name: iclms-LINUX.tar.gz
+          asset_content_type: application/gzip
+
+  build-windows:
+    needs: create-release
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.0.0
+        with:
+          node-version: 21
+          cache: 'yarn'
+      
+      - name: Build iclms-ui
+        run: |
+          cd iclms-ui
+          yarn install
+          yarn build
+      
+      - name: Copy files
+        run: |
+          xcopy iclms-ui\dist\* iclms-electron\serve /E /H /Y
+      
+      - name: Build Electron (Windows)
+        run: |
+          cd iclms-electron
+          yarn install
+          yarn build-windows
+      
+      - name: Upload file
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: iclms-electron\dist\iclms-*.exe
+          asset_name: iclms-WINDOWS.exe
+          asset_content_type: application/octet-stream
+
+  build-mac:
+    needs: create-release
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.0.0
+        with:
+          node-version: 21
+          cache: 'yarn'
+      
+      - name: Build iclms-ui
+        run: |
+          cd iclms-ui
+          yarn install
+          yarn build
+      
+      - name: Copy files
+        run: |
+          cp -r iclms-ui/dist/* iclms-electron/serve
+      
+      - name: Build Electron (Mac)
+        run: |
+          cd iclms-electron
+          yarn install
+          yarn build-mac
+      
+      - name: Upload file
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: iclms-electron/dist/iclms-*.dmg
+          asset_name: iclms-MAC.dmg
+          asset_content_type: application/octet-stream
