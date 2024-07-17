@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Get current datetime
         id: date
-        run: "echo ::set-output name=date::$(date +'%Y-%j %H:%M:%S')"
+        run: "echo ::set-output name=date::$(date +'%Y-%j-%H-%M-%S')"
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
