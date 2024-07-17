@@ -49,6 +49,7 @@ jobs:
       
       - name: Copy files
         run: |
+          mkdir iclms-electron/serve
           cp -r iclms-ui/dist/* iclms-electron/serve
       
       - name: Build Electron (Linux)
@@ -85,6 +86,7 @@ jobs:
       
       - name: Copy files
         run: |
+          mkdir iclms-electron/serve
           xcopy iclms-ui\dist\* iclms-electron\serve /E /H /Y
       
       - name: Build Electron (Windows)
@@ -121,6 +123,7 @@ jobs:
       
       - name: Copy files
         run: |
+          mkdir iclms-electron/serve
           cp -r iclms-ui/dist/* iclms-electron/serve
       
       - name: Build Electron (Mac)
