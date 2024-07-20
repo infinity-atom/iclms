@@ -1,4 +1,4 @@
-const { app, BrowserWindow, shell, ipcMain } = require("electron");
+const { app, BrowserWindow, shell } = require("electron");
 const express = require("express");
 
 const createWindow = () => {
